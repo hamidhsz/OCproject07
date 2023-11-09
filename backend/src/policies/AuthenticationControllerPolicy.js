@@ -1,9 +1,10 @@
 const Joi = require('joi')
 const passwordRegex = /^[a-zA-Z0-9!@#$%^&*()_]{8,30}$/
 const schema = Joi.object({
+    firstName: Joi.string().required(),
+    lastName: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().pattern(passwordRegex).required()
-    
 })
 
 module.exports = { 
