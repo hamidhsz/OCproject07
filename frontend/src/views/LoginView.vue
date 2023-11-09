@@ -1,14 +1,7 @@
 <template>
   <main>
-    <div>
+    <div class ='container'>
       <h1>Log in</h1>
-      <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex illum quia
-        quasi quibusdam consectetur doloremque ab fuga iste consequatur
-        excepturi aliquid corporis provident, culpa cumque, animi deserunt optio
-        aperiam autem!
-      </p>
-
       <input type="email" name="email" v-model="email" placeholder="email" />
 
       <input
@@ -28,6 +21,7 @@
 <script>
 import { setJwtToken } from "@/utils";
 import AuthenticationService from "../services/AuthenticationService";
+import store from '../store/index.js'; // Import the store
 export default {
   data() {
     return {
@@ -36,6 +30,7 @@ export default {
       error: null,
     };
   },
+ 
 
   methods: {
     async login() {
@@ -44,12 +39,12 @@ export default {
           email: this.email,
           password: this.password,
         });
-        console.log("res: ", response);
+
         
         const jwtToken = response.data.token;
         
         setJwtToken(jwtToken);
-        
+        store.setIsLoggedIn(true); // Update the state
         this.$router.push('/userprofile')
 
       } catch (error) {
@@ -64,6 +59,7 @@ export default {
 .container {
   max-width: 400px;
   margin: 0 auto;
+  margin-top: 40px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
