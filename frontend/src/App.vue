@@ -1,11 +1,14 @@
 <script setup>
 import {RouterView} from "vue-router";
 import {getJwtToken} from "@/utils"; 
-import { ref } from 'vue';
+import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
-const isLoggedIn = ref(!!getJwtToken());
+
+const isLoggedIn = computed(() => !!getJwtToken());
 const router = useRouter();
+
+
 
 const logout = () => {
   sessionStorage.removeItem('jwt');

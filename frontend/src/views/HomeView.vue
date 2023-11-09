@@ -1,17 +1,25 @@
-<script setup>
-
-</script>
-
 <template>
   <main>
-    
-    <h1> HelloWorld </h1>
-    <p> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maxime, sunt? </p>
-
+    <h1>Posts</h1>
+    <div v-for="post in posts" :key="post.id">
+      <h2>{{ post.title }}</h2>
+      <p>{{ post.content }}</p>
+    </div>
   </main>
-  
 </template>
 
-<style scoped> 
+<script>
+import axios from 'axios';
 
-</style>
+export default {
+  data() {
+    return {
+      posts: [],
+    };
+  },
+  async created() {
+    const response = await axios.get('/posts');
+    this.posts = response.data;
+  },
+};
+</script>

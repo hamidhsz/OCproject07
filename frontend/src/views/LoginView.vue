@@ -50,7 +50,7 @@ export default {
         
         setJwtToken(jwtToken);
         
-        this.$router.push('/')
+        this.$router.push('/userprofile')
 
       } catch (error) {
         this.error = error.response.data.error;
