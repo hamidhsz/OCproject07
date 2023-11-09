@@ -1,11 +1,20 @@
 <template>
 <main>
-<div>
+<div class="container"> 
 <h1> Register </h1>
-<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex illum quia quasi quibusdam consectetur doloremque ab fuga iste consequatur excepturi aliquid corporis provident, culpa cumque, animi deserunt optio aperiam autem!</p>
 
 <form autocomplete="off">
+<input
+ type = 'text'
+ name = 'firstName'
+ v-model="firstName"
+ placeholder="First Name" />
 
+ <input
+ type = 'text'
+ name = 'lastName'
+ v-model="lastName"
+ placeholder="Last Name" />
 
 <input
  type = 'email'
@@ -41,6 +50,8 @@ import AuthenticationService from '../services/AuthenticationService'
 export default {
     data() {
         return {
+            firstName: '',
+            lastName: '',
             email: '',
             password: '',
             error: null
@@ -52,8 +63,10 @@ methods: {
     async register(){
         try{
         await AuthenticationService.register({
-            email: this.email,
-            password: this.password
+          firstName: this.firstName,
+          lastName: this.lastName,  
+          email: this.email,
+          password: this.password
         })
         } catch (error) {
             this.error = error.response.data.error
@@ -67,10 +80,13 @@ methods: {
 .container {
   max-width: 400px;
   margin: 0 auto;
+  margin-top: 40px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
   text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
 }
 
 h1 {
@@ -83,18 +99,22 @@ h1 {
 
 input {
   margin: 10px 0;
-  padding: 10px;
-  width: 50%; /* Set the input width to 50% */
-  display: block; /* Make the input a block element */
-  margin: 0 auto; /* Center the input horizontally */
+  padding:25px;
+  width: 80%; 
+  display: block; 
+  margin: 0 auto; 
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 
-input[name="password"] {
+
+
+input[name="password"],
+input[name="firstName"],
+input[name="lastName"],
+input[name ="email"] {
   margin-top: 10px;
 }
-
 
 button {
   margin-top: 10px;
@@ -104,8 +124,8 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  display: block; /* Make the button a block element */
-  margin: 0 auto; /* Center the button horizontally */
+  display: block; 
+  margin: 0 auto; 
 }
 
 button:hover {

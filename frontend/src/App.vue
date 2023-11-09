@@ -22,7 +22,7 @@ const logout = () => {
     <div class="links">
       <a href="/">Home</a>
       <a href="/login" v-if="!isLoggedIn">Log In</a>
-      <a href="/register" v-if="!isLoggedIn">Sign Up</a>
+      <a href="/register" v-if="!isLoggedIn">Register</a>
       <a href="#" @click="logout" v-if="isLoggedIn">Log Out</a>
     </div>
     <RouterView />
