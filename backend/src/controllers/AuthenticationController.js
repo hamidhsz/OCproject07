@@ -7,12 +7,12 @@ const bcrypt = require('bcrypt');
 module.exports = {
     async register (req,res) {
         
-        console.log('Request body',req.body)
+        // console.log('Request body',req.body)
             try {
                 const user = await User.create(req.body)
                 res.send(user.toJSON())
             } catch (err) {
-                console.log(err)
+                // console.log(err)
                 res.status(400).send({
                     // error: 'This email address already used.'
                     error: err.message
@@ -56,7 +56,7 @@ module.exports = {
                     
                 })
             } catch (err) {
-                console.log(err)
+                // console.log(err)
                 res.status(500).send({
                     error: 'Invalid info.'
                 })

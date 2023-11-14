@@ -1,57 +1,62 @@
 <template>
-    <div>
-      <h1>User Profile</h1>
-      <div v-if="user">
-        <p><strong>Email:</strong> {{ user.email }}</p>
-      </div>
-      <button @click="logout">Logout</button>
+  <div>
+    <h1>User Profile</h1>
+    <div v-if="user">
+      <p><strong>Email:</strong> {{ user.email }}</p>
+    </div>
+    <button @click="logout">Logout</button>
 
-      <!-- Blog Post Form -->
-    <div class = 'blog-post-form'>
+    <!-- Blog Post Form -->
+    <div class="blog-post-form">
       <h2>Post a Blog</h2>
       <form @submit.prevent="submitPost">
         <label for="title">Title:</label>
-      <input id="title" v-model="postTitle" type="text" required>
+        <input id="title" v-model="postTitle" type="text" required />
 
-       <label for="content">Content:</label>
+        <label for="content">Content:</label>
         <textarea id="content" v-model="postContent" required></textarea>
 
         <button type="submit">Submit</button>
       </form>
     </div>
+  </div>
+</template>
 
-    </div>
-  </template>
-  
-  <script>
-import axios from 'axios';
+<script>
+import axios from "axios";
+import { getJwtToken } from "@/utils";
 
 export default {
   data() {
     return {
       user: null,
-      postTitle: '',
-      postContent: '',
+      postTitle: "",
+      postContent: "",
     };
   },
   async created() {
-    const userId = localStorage.getItem('user');
+    const userId = localStorage.getItem("user");
     if (userId) {
       const response = await axios.get(`/users/${userId}`);
       this.user = response.data;
     }
   },
   methods: {
+    // TODO: Add jwt token to request to validate user on the backend
     async submitPost() {
-      await axios.post('/posts', { title: this.postTitle, content: this.postContent });
-      this.postTitle = '';
-      this.postContent = '';
+      const jwtToken = getJwtToken();
+      await axios.post("http://localhost:8081/posts", {
+        title: this.postTitle,
+        content: this.postContent,
+        jwtToken: jwtToken,
+      });
+      this.postTitle = "";
+      this.postContent = "";
     },
   },
 };
 </script>
-  
-  
+
 <style scoped>
 .blog-post-form {
   width: 80%;
@@ -87,7 +92,7 @@ export default {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #007BFF;
+  background-color: #007bff;
   color: white;
   cursor: pointer;
 }

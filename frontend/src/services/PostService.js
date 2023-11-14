@@ -5,7 +5,7 @@ export default {
     return Api().get('posts');
   },
   submitPost(postData) {
-    return Api().post('posts', postData);
+    return Api().post('https://localhost:8081/posts', postData);
   },
-  // ... updatePost and deletePost methods
+  
 };

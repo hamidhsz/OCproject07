@@ -29,7 +29,7 @@ async register(req,res,next){
                 })
             }
         } else {
-            console.log(error)
+            // console.log(error)
             res.status(500).send({
                 error: 'Internal server error'
             })
