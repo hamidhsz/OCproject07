@@ -1,6 +1,6 @@
 const AuthenticationController = require('./controllers/AuthenticationController');
 const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy');
-const PostController = require('./controllers/PostController'); 
+const PostController = require('./controllers/PostController'); // This should be the path to your PostController
 
 module.exports = (app) => {
     app.post('/register', AuthenticationControllerPolicy.register, AuthenticationController.register);

@@ -28,6 +28,22 @@ module.exports = {
       });
     }
   },
+  // Retrieve a single post by id
+  async show(req, res) {
+    try {
+      const post = await Post.findByPk(req.params.id);
+      if (!post) {
+        return res.status(404).send({
+          error: 'The post you are trying to show does not exist.'
+        });
+      }
+      res.send(post);
+    } catch (error) {
+      res.status(500).send({
+        error: 'An error has occurred trying to show the post.'
+      });
+    }
+  },
 
   // Update a post
   async update(req, res) {
@@ -67,3 +83,4 @@ module.exports = {
     }
   }
 };
+
