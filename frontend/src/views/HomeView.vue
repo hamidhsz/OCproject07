@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import PostService from '@/services/PostService'; // Import your PostService
 
 export default {
   data() {
@@ -18,7 +18,7 @@ export default {
     };
   },
   async created() {
-    const response = await axios.get('/posts');
+    const response = await PostService.getPosts(); // Use PostService to get posts
     this.posts = response.data;
   },
 };
