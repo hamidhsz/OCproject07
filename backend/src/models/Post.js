@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
         key: "id",
       },
     },
+    likes: DataTypes.INTEGER,
+    dislikes: DataTypes.INTEGER,
+    usersLiked: DataTypes.ARRAY(DataTypes.STRING), 
+    usersDisliked: DataTypes.ARRAY(DataTypes.STRING),
   });
   Post.associate = function (models) {
     console.log(models);

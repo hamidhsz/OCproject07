@@ -25,6 +25,43 @@ module.exports = {
     }
   },
 
+  // Like or dislike a post
+  async likePost(req, res) {
+    try {
+      const post = await Post.findByPk(req.params.id);
+      if (req.body.like === 1) {
+        // Add a like
+        post.likes++;
+        if (!post.usersLiked.includes(req.body.userId)) {
+          post.usersLiked.push(req.body.userId);
+        }
+        await post.save();
+        res.status(200).json({ message: 'Like added!' });
+      } else if (req.body.like === -1) {
+        // Add a dislike
+        post.dislikes++;
+        if (!post.usersDisliked.includes(req.body.userId)) {
+          post.usersDisliked.push(req.body.userId);
+        }
+        await post.save();
+        res.status(200).json({ message: 'Dislike added!' });
+      } else {
+        // Remove like or dislike
+        if (post.usersLiked.includes(req.body.userId)) {
+          post.likes--;
+          post.usersLiked = post.usersLiked.filter(user => user !== req.body.userId);
+        } else if (post.usersDisliked.includes(req.body.userId)) {
+          post.dislikes--;
+          post.usersDisliked = post.usersDisliked.filter(user => user !== req.body.userId);
+        }
+        await post.save();
+        res.status(200).json({ message: 'Like/Dislike removed!' });
+      }
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  },
+
   // Retrieve all posts
   async list(req, res) {
     try {

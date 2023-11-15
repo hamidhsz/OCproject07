@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import PostService from '@/services/PostService'; // Import your PostService
+import PostService from '@/services/PostService'; // Import PostService
 
 export default {
   data() {
