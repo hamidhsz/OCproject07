@@ -7,5 +7,10 @@ export default {
   submitPost(postData) {
     return Api().post('https://localhost:8081/posts', postData);
   },
-  
+  likePost(id) {
+    return Api().post(`posts/${id}/like`, { like: 1 });
+  },
+  dislikePost(id) {
+    return Api().post(`posts/${id}/like`, { like: -1 });
+  },
 };

@@ -1,15 +1,19 @@
 <template>
   <main>
     <h1>Posts</h1>
-    <div v-for="post in posts" :key="post.id">
+    <div v-for="post in posts" :key="post.id" class="post">
       <h2>{{ post.title }}</h2>
       <p>{{ post.content }}</p>
+      <div class="actions">
+        <button @click="likePost(post.id)">Like</button>
+        <button @click="dislikePost(post.id)">Dislike</button>
+      </div>
     </div>
   </main>
 </template>
 
 <script>
-import PostService from '@/services/PostService'; // Import PostService
+import PostService from '@/services/PostService';
 
 export default {
   data() {
@@ -18,8 +22,30 @@ export default {
     };
   },
   async created() {
-    const response = await PostService.getPosts(); // Use PostService to get posts
+    const response = await PostService.getPosts();
     this.posts = response.data;
+  },
+  methods: {
+    async likePost(id) {
+      await PostService.likePost(id);
+      // Refresh posts or update the specific post
+    },
+    async dislikePost(id) {
+      await PostService.dislikePost(id);
+      // Refresh posts or update the specific post
+    },
   },
 };
 </script>
+
+<style scoped>
+.post {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.actions {
+  margin-top: 10px;
+}
+</style>
