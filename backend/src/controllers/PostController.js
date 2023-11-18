@@ -1,6 +1,7 @@
 const { Post } = require("../models");
 const jwt = require("jsonwebtoken");
 const config = require("../config/config");
+const multer = require('../middleware/multer')
 module.exports = {
   // Create a new post
   async create(req, res) {
@@ -11,10 +12,17 @@ module.exports = {
       const { id } = jwt.verify(jwtToken, config.jwt.secret);
       console.log("user: ", id);
 
+      // Extract the image URL from the file uploaded via multer
+      let imageUrl = null;
+      if (req.file) {
+        imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+      }
+
       const post = await Post.create({
         title: req.body.title,
         content: req.body.content,
         userId: id,
+        imageUrl: imageUrl
       });
       res.status(201).send(post);
     } catch (error) {

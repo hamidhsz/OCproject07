@@ -9,7 +9,7 @@ module.exports = (app) => {
 
     // Post routes
     app.post('/posts', multer, PostController.create);
-    app.post('/posts', PostController.create); // Create a new post
+    //app.post('/posts', PostController.create); // Create a new post
     app.get('/posts', PostController.list); // Get all posts
     app.get('/posts/:id', PostController.show); // Get a single post by id
     app.put('/posts/:id', PostController.update); // Update a post by id
