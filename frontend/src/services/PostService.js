@@ -1,16 +1,16 @@
-import Api from './Api';
+import Api from "./Api";
 
 export default {
   getPosts() {
-    return Api().get('posts');
+    return Api().get("posts");
   },
   submitPost(postData) {
-    return Api().post('https://localhost:8081/posts', postData);
+    return Api().post("https://localhost:8081/posts", postData);
   },
-  likePost(id) {
-    return Api().post(`posts/${id}/like`, { like: 1 });
+  likePost({ id, jwtToken }) {
+    return Api().post(`posts/${id}/like`, { like: 1, jwtToken });
   },
-  dislikePost(id) {
-    return Api().post(`posts/${id}/like`, { like: -1 });
+  dislikePost({ id, jwtToken }) {
+    return Api().post(`posts/${id}/like`, { like: -1, jwtToken });
   },
 };

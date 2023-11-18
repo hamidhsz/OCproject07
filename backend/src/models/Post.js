@@ -14,23 +14,33 @@ module.exports = (sequelize, DataTypes) => {
     dislikes: DataTypes.INTEGER,
     usersLiked: {
       type: DataTypes.TEXT,
-      get: function() {
-        const rawValue = this.getDataValue('usersLiked');
+      get: function () {
+        const rawValue = this.getDataValue("usersLiked");
         return rawValue ? JSON.parse(rawValue) : null;
       },
-      set: function(val) {
-        this.setDataValue('usersLiked', JSON.stringify(val));
-      }
+      set: function (val) {
+        this.setDataValue("usersLiked", JSON.stringify(val));
+      },
+    },
+    imageUrl: {
+      type: DataTypes.TEXT,
+      get: function () {
+        const rawValue = this.getDataValue("imageUrl");
+        return rawValue;
+      },
+      set: function (val) {
+        this.setDataValue("imageUrl", String(val));
+      },
     },
     usersDisliked: {
       type: DataTypes.TEXT,
-      get: function() {
-        const rawValue = this.getDataValue('usersDisliked');
+      get: function () {
+        const rawValue = this.getDataValue("usersDisliked");
         return rawValue ? JSON.parse(rawValue) : null;
       },
-      set: function(val) {
-        this.setDataValue('usersDisliked', JSON.stringify(val));
-      }
+      set: function (val) {
+        this.setDataValue("usersDisliked", JSON.stringify(val));
+      },
     },
   });
 

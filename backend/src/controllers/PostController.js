@@ -28,34 +28,43 @@ module.exports = {
   // Like or dislike a post
   async likePost(req, res) {
     try {
+      const { jwtToken } = req.body;
+      console.log("jwtToken: ", jwtToken);
+      const { id } = jwt.verify(jwtToken, config.jwt.secret);
+      console.log("user: ", id);
       const post = await Post.findByPk(req.params.id);
-      if (req.body.like === 1) {
+
+      if (Number(req.body.like) === 1) {
         // Add a like
+        // Post.updateOne(
+        //   { _id: req.params.id },
+        //   { $inc: { likes: req.body.like++ }, $push: { usersLiked: id } }
+        // ).then(() => res.status(200).json({ message: "Like added!" }));
         post.likes++;
-        if (!post.usersLiked.includes(req.body.userId)) {
-          post.usersLiked.push(req.body.userId);
+        const likedArray = JSON.parse(post.getDataValue("usersLiked"));
+        if (Array.isArray(likedArray) && !likedArray.includes(id)) {
+          post.setDataValue("usersLiked", JSON.stringify([...likedArray, id]));
+        }
+        if (!Array.isArray(likedArray)) {
+          post.setDataValue("usersLiked", JSON.stringify([id]));
         }
         await post.save();
-        res.status(200).json({ message: 'Like added!' });
-      } else if (req.body.like === -1) {
-        // Add a dislike
-        post.dislikes++;
-        if (!post.usersDisliked.includes(req.body.userId)) {
-          post.usersDisliked.push(req.body.userId);
-        }
-        await post.save();
-        res.status(200).json({ message: 'Dislike added!' });
+        res.status(200).json({ message: "Like added!", post });
       } else {
-        // Remove like or dislike
-        if (post.usersLiked.includes(req.body.userId)) {
-          post.likes--;
-          post.usersLiked = post.usersLiked.filter(user => user !== req.body.userId);
-        } else if (post.usersDisliked.includes(req.body.userId)) {
-          post.dislikes--;
-          post.usersDisliked = post.usersDisliked.filter(user => user !== req.body.userId);
+        // Add a dislike
+        post.likes--;
+        const likedArray = JSON.parse(post.getDataValue("usersLiked"));
+        if (Array.isArray(likedArray) && likedArray.includes(id)) {
+          post.setDataValue(
+            "usersLiked",
+            JSON.stringify(likedArray.filter((idLiked) => idLiked !== id))
+          );
+        }
+        if (!Array.isArray(likedArray)) {
+          post.setDataValue("usersLiked", JSON.stringify([]));
         }
         await post.save();
-        res.status(200).json({ message: 'Like/Dislike removed!' });
+        res.status(200).json({ message: "Dislike added!", post });
       }
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -63,6 +72,7 @@ module.exports = {
   },
 
   // Retrieve all posts
+
   async list(req, res) {
     try {
       const posts = await Post.findAll();
@@ -73,6 +83,7 @@ module.exports = {
       });
     }
   },
+
   // Retrieve a single post by id
   async show(req, res) {
     try {

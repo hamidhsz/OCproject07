@@ -9,10 +9,10 @@
     <!-- Blog Post Form -->
     <div class="blog-post-form">
       <h2>Post a Blog</h2>
-      <form @submit.prevent="submitPost">
+      <form @submit.prevent="submitPost" enctype="multipart/form-data">
         <label for="title">Title:</label>
         <input id="title" v-model="postTitle" type="text" required />
-
+        <input type="file" @change="uploadFile" ref="file" />
         <label for="content">Content:</label>
         <textarea id="content" v-model="postContent" required></textarea>
 
@@ -32,6 +32,7 @@ export default {
       user: null,
       postTitle: "",
       postContent: "",
+      image: null,
     };
   },
   async created() {
@@ -43,11 +44,19 @@ export default {
   },
   methods: {
     // TODO: Add jwt token to request to validate user on the backend
+    uploadFile(input) {
+      console.log(input.currentTarget.files[0]);
+      this.image = input.currentTarget.files[0];
+      // Find a way to pass this to the API 
+      // TODO: into how to serialize a File
+    },
     async submitPost() {
       const jwtToken = getJwtToken();
+  
       await axios.post("http://localhost:8081/posts", {
         title: this.postTitle,
         content: this.postContent,
+        image: this.image,
         jwtToken: jwtToken,
       });
       this.postTitle = "";

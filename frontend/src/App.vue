@@ -5,9 +5,8 @@ import { useRouter } from 'vue-router';
 import store from './store/index.js'; // Import the store
 
 const isLoggedIn = computed(() => store.isLoggedIn); // Use the state from the store
+
 const router = useRouter();
-
-
 
 const logout = () => {
   sessionStorage.removeItem('jwt');

@@ -13,7 +13,8 @@
 </template>
 
 <script>
-import PostService from '@/services/PostService';
+import PostService from "@/services/PostService";
+import { getJwtToken } from "@/utils";
 
 export default {
   data() {
@@ -27,11 +28,13 @@ export default {
   },
   methods: {
     async likePost(id) {
-      await PostService.likePost(id);
+      const jwtToken = getJwtToken();
+      await PostService.likePost({ id, jwtToken });
       // Refresh posts or update the specific post
     },
     async dislikePost(id) {
-      await PostService.dislikePost(id);
+      const jwtToken = getJwtToken();
+      await PostService.dislikePost({ id, jwtToken });
       // Refresh posts or update the specific post
     },
   },
