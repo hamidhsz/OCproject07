@@ -3,6 +3,7 @@
     <h1>Posts</h1>
     <div v-for="post in posts" :key="post.id" class="post">
       <h2>{{ post.title }}</h2>
+      <img :src="post.imageUrl" alt="Post image" v-if="post.imageUrl" />
       <p>{{ post.content }}</p>
       <div class="actions">
         <button @click="likePost(post.id)">Like</button>

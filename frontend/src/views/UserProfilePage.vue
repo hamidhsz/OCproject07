@@ -43,24 +43,27 @@ export default {
     }
   },
   methods: {
-    // TODO: Add jwt token to request to validate user on the backend
-    uploadFile(input) {
-      console.log(input.currentTarget.files[0]);
-      this.image = input.currentTarget.files[0];
-      // Find a way to pass this to the API 
-      // TODO: into how to serialize a File
+    uploadFile(event) {
+      this.image = event.target.files[0];
     },
     async submitPost() {
       const jwtToken = getJwtToken();
-  
-      await axios.post("http://localhost:8081/posts", {
-        title: this.postTitle,
-        content: this.postContent,
-        image: this.image,
-        jwtToken: jwtToken,
+      let formData = new FormData();
+      formData.append('title', this.postTitle);
+      formData.append('content', this.postContent);
+      if (this.image) {
+        formData.append('image', this.image);
+      }
+      formData.append('jwtToken', jwtToken);
+
+      await axios.post("http://localhost:8081/posts", formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       });
       this.postTitle = "";
       this.postContent = "";
+      this.image = null;
     },
   },
 };
